@@ -21,8 +21,12 @@ body {
 .headingSection {
   @apply text-xl md:text-3xl relative pl-[20px];
 }
+.headingSectionSecondary {
+  @apply text-lg md:text-xl relative pl-[10px];
+}
 
-.headingSection::before {
+.headingSection::before,
+.headingSectionSecondary::before {
   content: "";
   display: block;
   position: absolute;
