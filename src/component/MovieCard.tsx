@@ -2,10 +2,11 @@ import Image from "next/image";
 import React from "react";
 import Star, { StarOutline } from "./Icons/Star";
 import { Button } from "@nextui-org/react";
+import AddFav from "./AddFav";
 
 const MovieCard = () => {
   return (
-    <div className="max-w-[15rem] space-y-4 bg-cardBackground rounded-lg">
+    <div className="max-w-[15rem] space-y-4 bg-cardBackground rounded-lg mx-auto">
       <Image
         src={"/movieThub.png"}
         width={250}
@@ -19,10 +20,11 @@ const MovieCard = () => {
           <span className="text-sm">7.6 / 10</span>
         </div>
         <h1 className="text-lg font-semibold">Mid-Season Trailer - Season 2</h1>
-        <Button className="gap-4 w-full bg-white bg-opacity-[0.08] text-[#5799ef] px-4 py-2 rounded-lg hover:bg-[#5799ef2e]">
+        {/* <Button className="gap-4 w-full bg-white bg-opacity-[0.08] text-[#5799ef] px-4 py-2 rounded-lg hover:bg-[#5799ef2e]">
           <StarOutline color="#5799ef" />
           Add to favorite.
-        </Button>
+        </Button> */}
+        <AddFav />
       </div>
     </div>
   );

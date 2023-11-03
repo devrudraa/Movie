@@ -1,23 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import MovieCard from "../MovieCard";
-import { Carousel as ReactCarousel } from "react-responsive-carousel";
+import Slider, { Settings } from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const MovieSuggestion = () => {
-  const [centerSlidePercentage, setCenterSlidePercentage] = useState(25);
+  const [slidesToShow, setCenterSlidePercentage] = useState(0);
 
   useEffect(() => {
-    // Function to calculate centerSlidePercentage based on the screen width
     const updateCenterSlidePercentage = () => {
       const screenWidth = window.innerWidth;
       if (screenWidth < 648) {
-        setCenterSlidePercentage(100); // For small screens, 1card
+        setCenterSlidePercentage(1); // For small screens, 1card
       } else if (screenWidth < 750) {
-        setCenterSlidePercentage(50); // For small screens, 1card
+        setCenterSlidePercentage(2); // For small screens, 1card
       } else if (screenWidth < 1024) {
-        setCenterSlidePercentage(100 / 3); // For medium screens, 3 cards
+        setCenterSlidePercentage(3); // For medium screens, 3 cards
       } else {
-        setCenterSlidePercentage(25); // For larger screens, 4 cards
+        setCenterSlidePercentage(4); // For larger screens, 4 cards
       }
     };
 
@@ -29,19 +30,19 @@ const MovieSuggestion = () => {
     };
   }, []);
 
+  const settings: Settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToScroll: 1,
+    slidesToShow: slidesToShow,
+    autoplay: false, // Enable auto-play
+  };
+
   return (
-    <section className="px-5 space-y-5">
+    <section className="space-y-5 mx-10">
       <h1 className="headingSection">Horror</h1>
-      {/* <div className="flex gap-5 overflow-x-scroll mx-auto items-center"> */}
-      <ReactCarousel
-        showIndicators={false}
-        showArrows
-        showThumbs={false}
-        useKeyboardArrows={true}
-        showStatus={false}
-        centerSlidePercentage={centerSlidePercentage}
-        centerMode={true}
-      >
+      <Slider {...settings}>
         <MovieCard />
         <MovieCard />
         <MovieCard />
@@ -52,8 +53,7 @@ const MovieSuggestion = () => {
         <MovieCard />
         <MovieCard />
         <MovieCard />
-      </ReactCarousel>
-      {/* </div> */}
+      </Slider>
     </section>
   );
 };

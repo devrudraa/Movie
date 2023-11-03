@@ -3,6 +3,7 @@ import { Button, Input } from "@nextui-org/react";
 import { SearchIcon } from "./Icons/Search";
 import Logo from "./Icons/Logo";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Nav() {
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
@@ -25,7 +26,9 @@ export default function Nav() {
         )}
         {!isSearchOpen && (
           <>
-            <Logo />
+            <Link href={"/"}>
+              <Logo />
+            </Link>{" "}
             <Input
               isClearable
               className="w-full max-w-xl hidden md:block"
@@ -35,18 +38,19 @@ export default function Nav() {
                 <SearchIcon className="text-black/50 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
               }
             />
-
             <div className="flex gap-1">
               <Button
                 variant="light"
                 isIconOnly
-                className="block md:hidden"
+                className=" md:hidden flex items-center justify-center"
                 onClick={() => setIsSearchOpen(true)}
               >
-                <SearchIcon className="text-white pointer-events-none flex-shrink-0 text-xl" />
+                <SearchIcon className="text-white pointer-events-none text-xl" />
               </Button>
 
-              <Button color="primary">Fav</Button>
+              <Button as={Link} href="/favorite" color="primary">
+                Favorite List
+              </Button>
             </div>
           </>
         )}
