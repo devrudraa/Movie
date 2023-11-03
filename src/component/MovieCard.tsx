@@ -20,10 +20,6 @@ const MovieCard = () => {
           <span className="text-sm">7.6 / 10</span>
         </div>
         <h1 className="text-lg font-semibold">Mid-Season Trailer - Season 2</h1>
-        {/* <Button className="gap-4 w-full bg-white bg-opacity-[0.08] text-[#5799ef] px-4 py-2 rounded-lg hover:bg-[#5799ef2e]">
-          <StarOutline color="#5799ef" />
-          Add to favorite.
-        </Button> */}
         <AddFav />
       </div>
     </div>
