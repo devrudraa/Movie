@@ -17,3 +17,5 @@ export const Sort = [
     value: "lowest-rating",
   },
 ];
+
+const GenreList = ["horror", "adventure", "comedy"];
