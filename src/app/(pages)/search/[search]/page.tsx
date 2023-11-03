@@ -8,6 +8,7 @@ import Dot from "@/component/Icons/Dot";
 import SearchLoading from "@/component/SearchLoading";
 import TrimText from "@/lib/TrimText";
 import { useIntersection } from "@mantine/hooks";
+import Link from "next/link";
 
 interface pageProps {
   params: { search: string };
@@ -88,15 +89,15 @@ const SearchPage: FC<pageProps> = ({ params }) => {
               return page.Search.map((data: MovieSearchType, i: number) => {
                 if (page.Search.length === i + 1) {
                   return (
-                    <div key={i} ref={ref}>
+                    <Link href={`/movie/${data.imdbID}`} key={i} ref={ref}>
                       <CarouselBanner Movie={data} />
-                    </div>
+                    </Link>
                   );
                 }
                 return (
-                  <div key={i}>
+                  <Link href={`/movie/${data.imdbID}`} key={i}>
                     <CarouselBanner Movie={data} />
-                  </div>
+                  </Link>
                 );
               });
           })}
