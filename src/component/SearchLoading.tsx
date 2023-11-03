@@ -13,7 +13,7 @@ const SearchLoading = () => {
           >
             <Skeleton className="rounded-lg w-full h-64" />
             <Skeleton className="w-full h-10 rounded-lg" />
-            <div className="flex gap2">
+            <div className="flex gap-2">
               <Skeleton className="w-full h-5 rounded-lg" />
               <Skeleton className="w-full h-5 rounded-lg" />
             </div>

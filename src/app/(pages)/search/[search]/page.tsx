@@ -1,65 +1,112 @@
 "use client";
-import { FC, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { FC, useEffect, useRef } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { MovieSearchType } from "@/lib/Types";
 import Image from "next/image";
 import Dot from "@/component/Icons/Dot";
 import SearchLoading from "@/component/SearchLoading";
 import TrimText from "@/lib/TrimText";
-import InfiniteScroll from "react-infinite-scroll-component";
-
-interface response {
-  data: {
-    Response: "True" | "False";
-    Search: MovieSearchType[];
-    totalResults: string;
-  };
-}
+import { useIntersection } from "@mantine/hooks";
 
 interface pageProps {
   params: { search: string };
 }
+
 const SearchPage: FC<pageProps> = ({ params }) => {
   const searchQuery = params.search.replaceAll("-", " ");
-  const [noOfPages, setNoOfPages] = useState<number>(1);
 
-  const { isLoading, data, error, isSuccess } = useQuery<response>({
-    queryKey: ["search", searchQuery],
-    queryFn: () =>
-      axios.get(
-        `http://www.omdbapi.com/?s=${searchQuery}&page=${noOfPages}3&apikey=8aafc4f8`
-      ),
+  const FetchData = async (page: number) => {
+    const response = await axios.get(
+      `http://www.omdbapi.com/?s=${searchQuery}&page=${page}&apikey=8aafc4f8`
+    );
+    return response;
+  };
+
+  const {
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isSuccess,
+    data,
+    error,
+  } = useInfiniteQuery(
+    ["movie"],
+    async ({ pageParam = 1 }) => {
+      const response = await FetchData(pageParam);
+      return response;
+    },
+    {
+      getNextPageParam: (_, pages) => {
+        return pages.length + 1;
+      },
+    }
+  );
+
+  const lastPostRef = useRef<HTMLElement>(null);
+  const { ref, entry } = useIntersection({
+    root: lastPostRef.current,
+    threshold: 0.5,
   });
+
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      console.log("Fetching next page");
+      fetchNextPage();
+    }
+  }, [entry, fetchNextPage]);
+
   if (isLoading) {
     return <SearchLoading />;
-  } else if (error) {
-    return <div>{error.message}</div>;
+  }
+  if (error) {
+    return <div>Error</div>;
   }
 
-  //   if (isSuccess && !noOfPages) {
-  //     setNoOfPages(
-  //       Math.ceil(parseInt(data.data.totalResults) / data.data.Search.length)
-  //     );
-  //   }
+  if (isSuccess) {
+    if (data?.pages[0].data.Response === "False")
+      return <div>error no result found</div>;
+  }
+
+  const totalResults = data?.pages[0].data.totalResults;
+  const pages = data?.pages.flatMap((page) => page.data);
 
   return (
-    <main className="space-y-5">
-      <div>
-        <label className="font-semibold">
-          Total result found:{" "}
-          {data?.data.Response === "True" && data?.data.totalResults}
-        </label>
-      </div>
-      {/* {items} */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 ">
-        {/* <div className="flex flex-wrap gap-1 justify-start"> */}
-        {data?.data.Response == "True" &&
-          data?.data.Search.map((search: any, index: number) => {
-            return <CarouselBanner Movie={search} key={index} />;
+    <>
+      {data?.pages[0].data.Response}
+      <main className="space-y-5">
+        <div>
+          <label className="font-semibold">
+            Total result found: {totalResults}
+          </label>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 ">
+          {/* <div className="flex flex-wrap gap-1 justify-start"> */}
+
+          {pages?.map((page) => {
+            if (page?.Response === "True")
+              return page.Search.map((data: MovieSearchType, i: number) => {
+                if (page.Search.length === i + 1) {
+                  return (
+                    <div key={i} ref={ref}>
+                      <CarouselBanner Movie={data} />
+                    </div>
+                  );
+                }
+                return (
+                  <div key={i}>
+                    <CarouselBanner Movie={data} />
+                  </div>
+                );
+              });
           })}
-      </div>
-    </main>
+        </div>
+
+        <div className="text-center">
+          {isFetchingNextPage ? "Loading..." : "Nothing to show more!"}
+        </div>
+      </main>
+    </>
   );
 };
 export default SearchPage;
@@ -67,7 +114,10 @@ export default SearchPage;
 // function CarouselBanner({ Movie }: { Movie: MovieType }) {
 function CarouselBanner({ Movie }: { Movie: MovieSearchType }) {
   return (
-    <div className="p-5 sm:mx-auto w-fit max-w-[15rem] space-y-3 bg-cardBackground rounded-lg mx-auto">
+    <div
+      // ref={ref}
+      className="p-5 sm:mx-auto w-fit max-w-[15rem] space-y-3 bg-cardBackground rounded-lg mx-auto h-full"
+    >
       {/* <div className="flex p-5 sm:mx-auto w-fit max-w-4xl gap-10 flex-col md:flex-row text-left mx-2"> */}
       <Image
         src={Movie.Poster != "N/A" ? Movie.Poster : "/movieThub.png"}

@@ -2,7 +2,7 @@
 import { Button, Input } from "@nextui-org/react";
 import { SearchIcon } from "./Icons/Search";
 import Logo from "./Icons/Logo";
-import { FormEventHandler, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
