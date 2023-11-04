@@ -2,10 +2,15 @@
 import AddFav from "@/component/AddFav";
 import Dot from "@/component/Icons/Dot";
 import Star from "@/component/Icons/Star";
+import MovieDetailsSkeleton from "@/component/MovieDetailsSkeleton";
+import { getMovieDetails } from "@/lib/ApiRequest";
 import formatDuration from "@/lib/FormatDuration";
 import TrimText from "@/lib/TrimText";
 import { MovieType } from "@/lib/Types";
+import { GetMyRatingReview } from "@/lib/UpdateFavList";
+
 import { useQuery } from "@tanstack/react-query";
+import axios, { AxiosResponse } from "axios";
 import Image from "next/image";
 import { FC } from "react";
 interface MovieDetailsProps {
@@ -15,29 +20,27 @@ interface MovieDetailsProps {
 const MovieDetails: FC<MovieDetailsProps> = ({ params }) => {
   const { data, isLoading, isError } = useQuery<MovieType>({
     queryKey: ["movie", params.id],
-    queryFn: async () => {
-      const response = await fetch(
-        `http://www.omdbapi.com/?i=${params.id}&apikey=8aafc4f8`
-      );
-      const data = await response.json();
-      return data;
+    queryFn: async (): Promise<MovieType> => {
+      return await getMovieDetails({ movieId: params.id });
     },
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <MovieDetailsSkeleton />;
   } else if (isError) {
     return <div>Error...</div>;
   }
 
+  const { rating: myRating } = GetMyRatingReview({ movieId: params.id });
+
   return (
-    <section className="flex p-5 max-w-6xl gap-10 flex-col md:flex-row  ">
+    <section className="flex p-3 sm:p-5 max-w-6xl gap-10 flex-col md:flex-row  ">
       <Image
-        src={data.Poster}
+        src={data.Poster != "N/A" ? data.Poster : "/noImage.png"}
         width={400}
         height={400}
         alt="Movie Thumb"
-        className="rounded-lg flex-1 max-w-sm mx-auto md:mx-0"
+        className="rounded-lg flex-1 max-w-full md:max-w-md mx-auto md:mx-0"
       />
 
       <div className="space-y-8 flex flex-col pb-10 max-w-md">
@@ -64,8 +67,8 @@ const MovieDetails: FC<MovieDetailsProps> = ({ params }) => {
             <div>
               <h1>Your Rating</h1>
               <div className="flex gap-3">
-                <Star />
-                7.6 / 10
+                <Star color="#5799ef" />
+                {myRating} / 5
               </div>
             </div>
           </div>
@@ -92,7 +95,7 @@ const MovieDetails: FC<MovieDetailsProps> = ({ params }) => {
             <span>{data.Writer}</span>
           </div>
         </div>
-        <div className="flex gap-3 ">
+        <div className="flex gap-3 flex-wrap">
           {data.Genre.split(",").map((genre, index) => {
             return (
               <div
@@ -104,7 +107,7 @@ const MovieDetails: FC<MovieDetailsProps> = ({ params }) => {
             );
           })}
         </div>
-        <AddFav />
+        <AddFav imageUrl={data.Poster} title={data.Title} movieId={params.id} />
       </div>
     </section>
   );

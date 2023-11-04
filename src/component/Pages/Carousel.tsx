@@ -2,15 +2,20 @@
 import { useState } from "react";
 import Image from "next/image";
 import React from "react";
-import Dot from "../Icons/Dot";
-import Star from "../Icons/Star";
 
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { MovieSearchType } from "@/lib/Types";
+import { GenreList } from "@/lib/Constant";
+import Link from "next/link";
 
-const Carousel = () => {
+interface CarouselProps {
+  movie: MovieSearchType[];
+}
+const Carousel = ({ movie }: CarouselProps) => {
   const [currentSlider, setCurrentSlider] = useState<number>(0);
+  console.log(movie);
 
   const settings: Settings = {
     dots: true,
@@ -20,9 +25,6 @@ const Carousel = () => {
     slidesToShow: 1,
     autoplay: true, // Enable auto-play
     customPaging: function (i: any) {
-      if (currentSlider === i) {
-        console.log(i);
-      }
       return (
         <button className="text-red-50">
           <svg width="5" height="5" xmlns="http://www.w3.org/2000/svg">
@@ -43,59 +45,59 @@ const Carousel = () => {
   return (
     <section className="px-8 space-y-5">
       <h1 className="headingSection">Explore Movies</h1>
-      <Slider {...settings}>
-        <CarouselBanner />
-        <CarouselBanner />
-        <CarouselBanner />
-      </Slider>
+      {movie.length > 0 && (
+        <Slider {...settings}>
+          {movie.map((_movie, index) => {
+            return (
+              <CarouselBanner
+                key={index}
+                movie={_movie}
+                genre={GenreList[index]}
+              />
+            );
+          })}
+        </Slider>
+      )}
     </section>
   );
 };
 export default Carousel;
 
-function CarouselBanner() {
+function CarouselBanner({
+  movie,
+  genre,
+}: {
+  movie: MovieSearchType;
+  genre: string;
+}) {
   return (
     <div className="flex p-5 sm:mx-auto w-fit max-w-4xl gap-10 flex-col md:flex-row text-left mx-2">
-      <Image
-        src={"/movieThub.png"}
-        width={250}
-        height={250}
-        alt="Movie Thumb"
-        className="rounded-lg"
-      />
+      <Link href={"/movie/" + movie.imdbID}>
+        <Image
+          src={movie.Poster != "N/A" ? movie.Poster : "/noImage.png"}
+          width={250}
+          height={250}
+          alt="Movie Thumb"
+          className="rounded-lg"
+        />
+      </Link>
       <div className="space-y-8 flex flex-col pb-10">
-        <div className="space-y-2">
+        <div className="space-y-2 flex-1">
           <div>
-            <h1 className="text-3xl font-semibold">
-              Mid-Season Trailer - Season 2
-            </h1>
+            <Link href={"/movie/" + movie.imdbID}>
+              <h1 className="text-3xl font-semibold">{movie.Title}</h1>
+            </Link>
             <div className="text-sm font-light text-gray-300 gap-3 flex items-center">
-              <label>2013</label>
-              <Dot />
-              <label>R</label>
-              <Dot />
-              <label>2hr 1min</label>
+              <label>{movie.Year}</label>
             </div>
           </div>
-          <div className="flex gap-3">
-            <Star />
-            7.6 / 10
-          </div>
         </div>
-        <p className="flex-1">
-          The mercurial villain Loki resumes his role as the God of Mischief in
-          a new series that takes place after the events of &quot;Avengers:
-          Endgame.&quot;
-        </p>
-        <div className="flex gap-3 ">
-          <div className="px-3 py-1 border-white border w-fit rounded-full cursor-pointer">
-            Action
+        <div className="flex gap-2 flex-wrap">
+          <div className="first-letter:capitalize px-3 py-1 border-white border w-fit rounded-full cursor-pointer">
+            {genre}
           </div>
-          <div className="px-3 py-1 border-white border w-fit rounded-full cursor-pointer">
-            Drama
-          </div>
-          <div className="px-3 py-1 border-white border w-fit rounded-full cursor-pointer">
-            Horror
+          <div className="first-letter:capitalize px-3 py-1 border-white border w-fit rounded-full cursor-pointer">
+            {movie.Type}
           </div>
         </div>
       </div>

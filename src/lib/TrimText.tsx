@@ -4,8 +4,8 @@ export default function TrimText({
   text,
   length = 50,
 }: {
-  text: string;
+  text: string | undefined;
   length?: number;
 }): React.ReactNode {
-  return text.length > length ? `${text.slice(0, length)}...` : text;
+  if (text) return text.length > length ? `${text.slice(0, length)}...` : text;
 }
