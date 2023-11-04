@@ -18,4 +18,4 @@ export const Sort = [
   },
 ];
 
-const GenreList = ["horror", "adventure", "comedy"];
+export const GenreList = ["horror", "adventure"];

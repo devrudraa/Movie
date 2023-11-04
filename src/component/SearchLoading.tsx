@@ -1,15 +1,15 @@
-import { Skeleton, card } from "@nextui-org/react";
+import { Skeleton } from "@nextui-org/react";
 import React from "react";
 
-const SearchLoading = () => {
-  const cards = Array(10).fill("");
+const SearchLoading = ({ length = 10 }: { length?: number }) => {
+  const cards = Array(length).fill("");
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 ">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       {cards.map((_, index) => {
         return (
           <main
             key={index}
-            className="space-y-3 bg-cardBackground p-3 rounded-lg"
+            className="space-y-3 bg-cardBackground p-3 rounded-lg min-w-[13rem]"
           >
             <Skeleton className="rounded-lg w-full h-64" />
             <Skeleton className="w-full h-10 rounded-lg" />

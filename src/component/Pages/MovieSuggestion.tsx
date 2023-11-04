@@ -4,8 +4,16 @@ import MovieCard from "../MovieCard";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { MovieSearchType } from "@/lib/Types";
+import Link from "next/link";
+import ArrowRight from "../Icons/ArrowRight";
 
-const MovieSuggestion = () => {
+interface MovieSuggestionProps {
+  Movie: { data: { Search: MovieSearchType[] } };
+  genre: string;
+}
+
+const MovieSuggestion = ({ Movie, genre }: MovieSuggestionProps) => {
   const [slidesToShow, setCenterSlidePercentage] = useState(0);
 
   useEffect(() => {
@@ -41,18 +49,20 @@ const MovieSuggestion = () => {
 
   return (
     <section className="space-y-5 mx-10">
-      <h1 className="headingSection">Horror</h1>
+      <Link href={"/search/" + genre}>
+        <div className="flex gap-3 items-center group w-fit ">
+          <h1 className="headingSection first-letter:capitalize group-hover:text-primary">
+            {genre}
+          </h1>
+          <span className="group-hover:translate-x-3 transition-all">
+            <ArrowRight />
+          </span>
+        </div>
+      </Link>
       <Slider {...settings}>
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
-        <MovieCard />
+        {Movie.data.Search.map((_movie) => {
+          return <MovieCard key={_movie.imdbID} Movie={_movie} />;
+        })}
       </Slider>
     </section>
   );
