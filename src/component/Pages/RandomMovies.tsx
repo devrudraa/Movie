@@ -32,8 +32,12 @@ const RandomMovies = () => {
     if (isSuccess) {
       const topMov: MovieSearchType[] = data.map((_data) => {
         // (0, _data.data.Search.length) * ;
+        // const randomIndex = Math.floor(
+        //   Math.random() * _data.data.Search.length - 1
+        // );
+        const max = _data.data.Search.length - 1;
         const randomIndex = Math.floor(
-          Math.random() * _data.data.Search.length - 1
+          Math.floor(Math.random() * (max - 1 + 1)) + 1
         );
 
         return _data.data.Search[randomIndex];

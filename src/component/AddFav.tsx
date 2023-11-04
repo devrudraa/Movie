@@ -65,6 +65,7 @@ const AddFav: FC<AddFavProps> = ({ movieId, imageUrl, title }) => {
       }
     }
     checkFavMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function removeFavorite() {

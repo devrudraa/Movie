@@ -45,7 +45,7 @@ const Carousel = ({ movie }: CarouselProps) => {
   return (
     <section className="px-8 space-y-5">
       <h1 className="headingSection">Explore Movies</h1>
-      {movie.length > 0 && (
+      {movie.length > 0 && movie && (
         <Slider {...settings}>
           {movie.map((_movie, index) => {
             return (
