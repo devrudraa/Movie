@@ -3,12 +3,14 @@ import AddFav from "@/component/AddFav";
 import Dot from "@/component/Icons/Dot";
 import Star from "@/component/Icons/Star";
 import MovieDetailsSkeleton from "@/component/MovieDetailsSkeleton";
+import { getMovieDetails } from "@/lib/ApiRequest";
 import formatDuration from "@/lib/FormatDuration";
 import TrimText from "@/lib/TrimText";
 import { MovieType } from "@/lib/Types";
 import { GetMyRatingReview } from "@/lib/UpdateFavList";
 
 import { useQuery } from "@tanstack/react-query";
+import axios, { AxiosResponse } from "axios";
 import Image from "next/image";
 import { FC } from "react";
 interface MovieDetailsProps {
@@ -18,12 +20,8 @@ interface MovieDetailsProps {
 const MovieDetails: FC<MovieDetailsProps> = ({ params }) => {
   const { data, isLoading, isError } = useQuery<MovieType>({
     queryKey: ["movie", params.id],
-    queryFn: async () => {
-      const response = await fetch(
-        `http://www.omdbapi.com/?i=${params.id}&apikey=8aafc4f8`
-      );
-      const data = await response.json();
-      return data;
+    queryFn: async (): Promise<MovieType> => {
+      return await getMovieDetails({ movieId: params.id });
     },
   });
 

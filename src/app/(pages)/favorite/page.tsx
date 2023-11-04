@@ -14,6 +14,7 @@ import TrimText from "@/lib/TrimText";
 import Nothing from "@/component/Nothing";
 import SearchLoading from "@/component/SearchLoading";
 import Link from "next/link";
+import { getMovieDetails } from "@/lib/ApiRequest";
 
 const Page = () => {
   const [movieData, setMovieData] = useState([]);
@@ -77,9 +78,7 @@ const MovieCardFav = ({
   const { isLoading, data } = useQuery({
     queryKey: [MovieId],
     queryFn: async () => {
-      return await axios.get(
-        `http://www.omdbapi.com/?i=${MovieId}&apikey=8aafc4f8`
-      );
+      return await getMovieDetails({ movieId: MovieId });
     },
     refetchOnWindowFocus: false,
   });
@@ -96,7 +95,8 @@ const MovieCardFav = ({
     <div className="max-w-[17rem] space-y-4 bg-cardBackground rounded-lg mx-auto h-full flex flex-col justify-between">
       <Link href={`/movie/${MovieId}`} className="w-full h-72 relative">
         <Image
-          src={data?.data.Poster != "N/A" ? data?.data.Poster : "/noImage.png"}
+          // @ts-ignore
+          src={data?.Poster != "N/A" ? data?.Poster : "/noImage.png"}
           fill
           alt="Movie Thumb"
           className="rounded-lg"
@@ -108,14 +108,14 @@ const MovieCardFav = ({
           <div>
             <Link href={`/movie/${MovieId}`}>
               <h1 className="text-xl font-semibold">
-                {TrimText({ text: data?.data.Title })}
+                {TrimText({ text: data?.Title })}
               </h1>
             </Link>
           </div>
           <div className="flex gap-1 items-center">
             <Star size={15} />
             <label htmlFor="rating" className="text-xs">
-              {data?.data.imdbRating} / 10
+              {data?.imdbRating} / 10
             </label>
             <Dot />
             <Star color="#507adc" size={18} />
@@ -128,7 +128,7 @@ const MovieCardFav = ({
           <h1 className="headingSectionSecondary">Your review</h1>
           <p className="flex-1">
             {myReview && myReview != ""
-              ? myReview
+              ? TrimText({ text: myReview, length: 150 })
               : "You haven't reviewed this movie yet!"}
           </p>
         </div>

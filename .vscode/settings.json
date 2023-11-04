@@ -3,8 +3,10 @@
     "apikey",
     "imdb",
     "mantine",
+    "nextjs",
     "nextui",
     "swipeable",
-    "tanstack"
+    "tanstack",
+    "toploader"
   ]
 }

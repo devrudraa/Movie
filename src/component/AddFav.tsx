@@ -151,6 +151,7 @@ const AddFav: FC<AddFavProps> = ({ movieId, imageUrl, title }) => {
                         {...register("review")}
                         placeholder="Write a review..."
                         className="w-full"
+                        maxLength={150}
                         // onChange={(e) => setReview()}
                       />
                     </div>

@@ -53,14 +53,11 @@ export async function RemoveFromFavorite({ movieId }: { movieId: string }) {
     );
 
     delete data[movieId];
-    console.log(movieId);
 
     const setData = {
       ...data,
       _movieIds: new_moviesIds,
     };
-
-    console.log(setData);
 
     localStorage.setItem("favMovies", JSON.stringify(setData));
   }

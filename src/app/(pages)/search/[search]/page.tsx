@@ -1,12 +1,13 @@
 "use client";
 import { FC, useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { MovieSearchType } from "@/lib/Types";
 import SearchLoading from "@/component/SearchLoading";
 import { useIntersection } from "@mantine/hooks";
 import MovieCard from "@/component/MovieCard";
 import Nothing from "@/component/Nothing";
+import LoadingIcon from "@/component/Icons/LoadingIcon";
+import { searchMovies } from "@/lib/ApiRequest";
 
 interface pageProps {
   params: { search: string };
@@ -16,10 +17,7 @@ const SearchPage: FC<pageProps> = ({ params }) => {
   const searchQuery = params.search.replaceAll("-", " ");
 
   const FetchData = async (page: number) => {
-    const response = await axios.get(
-      `http://www.omdbapi.com/?s=${searchQuery}&page=${page}&apikey=8aafc4f8`
-    );
-    return response;
+    return await searchMovies({ query: searchQuery, page: page });
   };
 
   const {
@@ -31,7 +29,7 @@ const SearchPage: FC<pageProps> = ({ params }) => {
     error,
   } = useInfiniteQuery(
     [searchQuery],
-    async ({ pageParam = 1 }) => {
+    async ({ pageParam = 1 }): Promise<any> => {
       const response = await FetchData(pageParam);
       return response;
     },
@@ -91,7 +89,7 @@ const SearchPage: FC<pageProps> = ({ params }) => {
         </div>
 
         <div className="text-center">
-          {isFetchingNextPage ? "Loading..." : "Nothing to show more!"}
+          {isFetchingNextPage ? <LoadingIcon /> : "You have reached the end!"}
         </div>
       </main>
     </>
