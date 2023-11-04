@@ -8,7 +8,7 @@ export async function getMovieDetails({
   movieId,
 }: getMovieDetailsProps): Promise<MovieType> {
   const data = await axios.get(
-    `http://www.omdbapi.com/?i=${movieId}&apikey=${process.env.NEXT_PUBLIC_IMDB_API_KEY}`
+    `https://www.omdbapi.com/?i=${movieId}&apikey=${process.env.NEXT_PUBLIC_IMDB_API_KEY}`
   );
   return data.data;
 }
@@ -25,7 +25,7 @@ export async function searchMovies({
   page = 1,
 }: searchMoviesProps): Promise<searchMoviesReturn> {
   const data = await axios.get(
-    `http://www.omdbapi.com/?s=${query}&page=${page}}&apikey=${process.env.NEXT_PUBLIC_IMDB_API_KEY}`
+    `https://www.omdbapi.com/?s=${query}&page=${page}}&apikey=${process.env.NEXT_PUBLIC_IMDB_API_KEY}`
   );
   return data;
 }
