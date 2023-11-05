@@ -24,8 +24,10 @@ export async function searchMovies({
   query,
   page = 1,
 }: searchMoviesProps): Promise<searchMoviesReturn> {
-  const data = await axios.get(
-    `https://www.omdbapi.com/?s=${query}&page=${page}}&apikey=${process.env.NEXT_PUBLIC_IMDB_API_KEY}`
+  console.log(page);
+
+  const response = await axios.get(
+    `http://www.omdbapi.com/?s=${query}&page=${page}&apikey=${process.env.NEXT_PUBLIC_IMDB_API_KEY}`
   );
-  return data;
+  return response;
 }

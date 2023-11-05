@@ -8,6 +8,7 @@ import MovieCard from "@/component/MovieCard";
 import NothingToShow from "@/component/NothingToShow";
 import LoadingIcon from "@/component/Icons/LoadingIcon";
 import { searchMovies } from "@/lib/ApiRequest";
+import axios from "axios";
 
 interface pageProps {
   params: { search: string };
@@ -15,10 +16,6 @@ interface pageProps {
 
 const SearchPage: FC<pageProps> = ({ params }) => {
   const searchQuery = params.search.replaceAll("-", " ");
-
-  const FetchData = async (page: number) => {
-    return await searchMovies({ query: searchQuery, page: page });
-  };
 
   const {
     fetchNextPage,
@@ -28,9 +25,12 @@ const SearchPage: FC<pageProps> = ({ params }) => {
     data,
     error,
   } = useInfiniteQuery(
-    [searchQuery],
+    [searchMovies],
     async ({ pageParam = 1 }): Promise<any> => {
-      const response = await FetchData(pageParam);
+      const response = await searchMovies({
+        query: searchQuery,
+        page: pageParam,
+      });
       return response;
     },
     {
