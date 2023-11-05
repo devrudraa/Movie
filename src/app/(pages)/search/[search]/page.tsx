@@ -25,7 +25,7 @@ const SearchPage: FC<pageProps> = ({ params }) => {
     data,
     error,
   } = useInfiniteQuery(
-    [searchMovies],
+    [searchQuery],
     async ({ pageParam = 1 }): Promise<any> => {
       const response = await searchMovies({
         query: searchQuery,
