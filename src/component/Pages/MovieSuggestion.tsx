@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { MovieSearchType } from "@/lib/Types";
 import Link from "next/link";
-import ArrowRight from "../Icons/ArrowRight";
+import Arrow from "../Icons/Arrow";
 
 interface MovieSuggestionProps {
   Movie: { data: { Search: MovieSearchType[] } };
@@ -55,7 +55,7 @@ const MovieSuggestion = ({ Movie, genre }: MovieSuggestionProps) => {
             {genre}
           </h1>
           <span className="group-hover:translate-x-3 transition-all">
-            <ArrowRight />
+            <Arrow />
           </span>
         </div>
       </Link>

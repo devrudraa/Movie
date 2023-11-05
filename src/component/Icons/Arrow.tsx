@@ -1,11 +1,12 @@
 import React from "react";
 
-const ArrowRight = ({ className }: { className?: string }) => {
+const Arrow = ({ className }: { className?: string }) => {
   return (
     <svg
       className={className}
       width="34"
       height="34"
+      fill="none"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -19,4 +20,4 @@ const ArrowRight = ({ className }: { className?: string }) => {
     </svg>
   );
 };
-export default ArrowRight;
+export default Arrow;

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-const Nothing = () => {
+const NothingToShow = () => {
   return (
     <section className="max-w-md grid place-items-center py-5 px-3 mx-auto min-h-screen">
       <div className="space-y-5 text-center">
@@ -11,4 +11,4 @@ const Nothing = () => {
     </section>
   );
 };
-export default Nothing;
+export default NothingToShow;

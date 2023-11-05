@@ -8,7 +8,7 @@
 }
 
 body {
-  @apply bg-black text-white dark;
+  @apply bg-black text-white dark scroll-smooth;
 }
 
 #hero {

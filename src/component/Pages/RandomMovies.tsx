@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import MovieSuggestion from "./MovieSuggestion";
 import { useQuery } from "@tanstack/react-query";
 import { GenreList } from "@/lib/Constant";
-import SearchLoading from "../SearchLoading";
+import MovieCardLoading from "../MovieCardLoading";
 import Carousel from "./Carousel";
 import { MovieSearchType } from "@/lib/Types";
 import { searchMovies } from "@/lib/ApiRequest";
@@ -50,7 +50,7 @@ const RandomMovies = () => {
   if (isLoading) {
     return (
       <div className="w-fit mx-auto">
-        <SearchLoading length={10} />
+        <MovieCardLoading length={10} />
       </div>
     );
   }

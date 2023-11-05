@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import Providers from "@/lib/Providers";
 import NextTopLoader from "nextjs-toploader";
 import Footer from "@/component/Footer";
+import BackToTop from "@/component/BackToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <body className={`${inter.className} min-h-screen`}>
           <NextTopLoader color="#f5c518" />
+          <BackToTop />
           <main className="max-w-[1280px] mx-auto">
             {children}
             <Footer />
