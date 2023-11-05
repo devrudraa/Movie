@@ -10,7 +10,6 @@ import { MovieType } from "@/lib/Types";
 import { GetMyRatingReview } from "@/lib/UpdateFavList";
 
 import { useQuery } from "@tanstack/react-query";
-import axios, { AxiosResponse } from "axios";
 import Image from "next/image";
 import { FC } from "react";
 interface MovieDetailsProps {

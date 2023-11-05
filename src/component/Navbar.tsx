@@ -6,6 +6,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Star from "./Icons/Star";
 
 type Inputs = {
   search: string;
@@ -13,11 +14,7 @@ type Inputs = {
 
 export default function Nav() {
   const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const urlFriendly = data.search.trim().replaceAll(" ", "-");
     router.push("/search/" + urlFriendly);
@@ -71,8 +68,13 @@ export default function Nav() {
                 <SearchIcon className="text-white pointer-events-none text-xl" />
               </Button>
 
-              <Button as={Link} href="/favorite" color="primary">
-                Favorite List
+              <Button
+                as={Link}
+                href="/favorite"
+                className="text-black"
+                color="primary"
+              >
+                <Star color="#5799ef" /> Favorite Movies
               </Button>
             </div>
           </>
