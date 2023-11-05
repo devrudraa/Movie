@@ -27,7 +27,7 @@ export async function searchMovies({
   console.log(page);
 
   const response = await axios.get(
-    `http://www.omdbapi.com/?s=${query}&page=${page}&apikey=${process.env.NEXT_PUBLIC_IMDB_API_KEY}`
+    `https://www.omdbapi.com/?s=${query}&page=${page}&apikey=${process.env.NEXT_PUBLIC_IMDB_API_KEY}`
   );
   return response;
 }
