@@ -1,7 +1,7 @@
 import { Skeleton } from "@nextui-org/react";
 import React from "react";
 
-const SearchLoading = ({ length = 10 }: { length?: number }) => {
+const MovieCardLoading = ({ length = 10 }: { length?: number }) => {
   const cards = Array(length).fill("");
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -23,4 +23,4 @@ const SearchLoading = ({ length = 10 }: { length?: number }) => {
     </div>
   );
 };
-export default SearchLoading;
+export default MovieCardLoading;

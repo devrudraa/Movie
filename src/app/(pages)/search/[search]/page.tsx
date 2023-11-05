@@ -2,10 +2,10 @@
 import { FC, useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { MovieSearchType } from "@/lib/Types";
-import SearchLoading from "@/component/SearchLoading";
+import MovieCardLoading from "@/component/MovieCardLoading";
 import { useIntersection } from "@mantine/hooks";
 import MovieCard from "@/component/MovieCard";
-import Nothing from "@/component/Nothing";
+import NothingToShow from "@/component/NothingToShow";
 import LoadingIcon from "@/component/Icons/LoadingIcon";
 import { searchMovies } from "@/lib/ApiRequest";
 
@@ -53,14 +53,14 @@ const SearchPage: FC<pageProps> = ({ params }) => {
   }, [entry, fetchNextPage]);
 
   if (isLoading) {
-    return <SearchLoading />;
+    return <MovieCardLoading />;
   }
   if (error) {
     return <div>Error</div>;
   }
 
   if (isSuccess) {
-    if (data?.pages[0].data.Response === "False") return <Nothing />;
+    if (data?.pages[0].data.Response === "False") return <NothingToShow />;
   }
 
   const totalResults = data?.pages[0].data.totalResults;
@@ -74,7 +74,7 @@ const SearchPage: FC<pageProps> = ({ params }) => {
             Total result found: {totalResults}
           </label>
         </div>
-        {/* <Nothing /> */}
+        {/* <NothingToShow /> */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 ">
           {pages?.map((page) => {
             if (page?.Response === "True")

@@ -3,16 +3,13 @@ import Dot from "@/component/Icons/Dot";
 import Star from "@/component/Icons/Star";
 import { Button } from "@nextui-org/react";
 import Image from "next/image";
-import { Select, SelectItem } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
-import { Sort } from "@/lib/Constant";
 import Bin from "@/component/Icons/Bin";
 import { GetMyRatingReview, RemoveFromFavorite } from "@/lib/UpdateFavList";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import TrimText from "@/lib/TrimText";
-import Nothing from "@/component/Nothing";
-import SearchLoading from "@/component/SearchLoading";
+import NothingToShow from "@/component/NothingToShow";
+import MovieCardLoading from "@/component/MovieCardLoading";
 import Link from "next/link";
 import { getMovieDetails } from "@/lib/ApiRequest";
 
@@ -40,13 +37,6 @@ const Page = () => {
             <h3 className="headingSectionSecondary">
               {movieData?.length} Titles
             </h3>
-            {/* <Select label="Sort" className="max-w-xs w-full" size="sm">
-              {Sort.map((sort) => (
-                <SelectItem key={sort.value} value={sort.value}>
-                  {sort.label}
-                </SelectItem>
-              ))}
-            </Select> */}
           </div>
           <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 ">
             {movieData?.map((data, index) => {
@@ -61,7 +51,7 @@ const Page = () => {
           </section>
         </>
       ) : (
-        <Nothing />
+        <NothingToShow />
       )}
     </main>
   );
@@ -84,7 +74,7 @@ const MovieCardFav = ({
   });
 
   if (isLoading) {
-    return <SearchLoading length={1} />;
+    return <MovieCardLoading length={1} />;
   }
 
   const { rating: myRating, review: myReview } = GetMyRatingReview({
